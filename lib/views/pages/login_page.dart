@@ -1,5 +1,6 @@
 import 'package:cartze/data/constants.dart';
 import 'package:cartze/utils/app_routes.dart';
+import 'package:cartze/views/pages/home_page.dart';
 import 'package:cartze/views/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,8 +16,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   Widget build(BuildContext context) {
     TextEditingController controller1 = TextEditingController();
     TextEditingController controller2 = TextEditingController();
-    TextEditingController controller3 = TextEditingController();
-    TextEditingController controller4 = TextEditingController();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -54,7 +54,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           );
                         },
                         style: FilledButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor: Color(0xffec5800),
+
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(20.0),
@@ -80,7 +81,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           );
                         },
                         style: FilledButton.styleFrom(
-                          backgroundColor: Color(0xffec5800),
+                          backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(20.0),
@@ -110,7 +111,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           child: TextField(
                             cursorColor: Colors.teal,
                             cursorHeight: 20.0,
-                            controller: controller2,
+                            controller: controller1,
                             decoration: AppStyles.textFieldDecoration("Email"),
                             onEditingComplete: () {
                               setState(() {});
@@ -124,7 +125,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           child: TextField(
                             cursorColor: Colors.teal,
                             cursorHeight: 20.0,
-                            controller: controller4,
+                            controller: controller2,
                             decoration: AppStyles.textFieldDecoration(
                               "Password",
                             ),
@@ -140,7 +141,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return MyRegisterPage();
+                                  return MyHomePage();
                                 },
                               ),
                             );

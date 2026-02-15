@@ -166,7 +166,7 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return MyRegisterPage();
+                                  return MyLoginPage();
                                 },
                               ),
                             );
