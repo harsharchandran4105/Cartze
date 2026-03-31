@@ -2,6 +2,7 @@ import 'package:cartze/data/constants.dart';
 import 'package:cartze/utils/app_routes.dart';
 import 'package:cartze/views/pages/home_page.dart';
 import 'package:cartze/views/pages/register_page.dart';
+import 'package:cartze/views/pages/role_page.dart';
 import 'package:flutter/material.dart';
 
 class MyLoginPage extends StatefulWidget {
@@ -141,7 +142,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return MyHomePage();
+                                  return RolePage();
                                 },
                               ),
                             );
