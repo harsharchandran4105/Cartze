@@ -1,17 +1,48 @@
-# cartze
+# Cartzy – Campus Marketplace App
 
-A new Flutter project.
+Cartzy is a mobile marketplace application built using **Flutter** and **Firebase** that allows students within a campus to **buy and sell products easily**.  
+The application provides separate flows for buyers and sellers, enabling product listing, browsing, reservation, and order management.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+### User Authentication
+- User registration and login using **Firebase Authentication**
+- Secure password handling
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+### Seller Features
+- Upload products with image, price, and description
+- View reserved orders for their products
+- Manage listed products
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Buyer Features
+- Browse products uploaded by sellers
+- Search for products
+- Reserve products
+- View reserved orders in profile
+
+### General Features
+- Profile page displaying user information
+- Order tracking for both buyers and sellers
+- Firebase Realtime Database integration
+- Clean and simple UI built with Flutter
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|------------|--------|
+| Flutter | Mobile app development |
+| Firebase Authentication | User login and registration |
+| Firebase Realtime Database | Backend database |
+| Dart | Programming language |
+| Image Picker | Product image selection |
+
+---
+
+## Database Structure
+
+### Users
+
