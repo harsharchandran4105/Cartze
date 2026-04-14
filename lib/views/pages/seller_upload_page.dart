@@ -1,7 +1,11 @@
 import 'package:cartze/data/product.dart';
+import 'package:cartze/views/pages/profile_page.dart';
+import 'package:cartze/views/pages/seller_profilepage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../services/database_service.dart';
 
 import '../../data/product.dart';
 import '../../models/product.dart';
@@ -60,50 +64,32 @@ class _SellerUploadPageState extends State<SellerUploadPage> {
   }
 
   /// UPLOAD PRODUCT
-  void uploadProduct() {
+Future<void> uploadProduct() async {
 
-    if (selectedImage == null ||
-        nameController.text.isEmpty ||
-        priceController.text.isEmpty) {
+  print("UPLOAD FUNCTION CALLED");
 
-      ScaffoldMessenger.of(context).showSnackBar(
-
-        const SnackBar(
-          content: Text("Please complete all fields"),
-        ),
-
-      );
-
-      return;
-    }
-
-    ProductData.addProduct(
-
-      Product(
-        name: nameController.text,
-        category: "Custom",
-        price: priceController.text,
-        image: selectedImage!.path,
-      ),
-
-    );
+  if (selectedImage == null ||
+      nameController.text.isEmpty ||
+      priceController.text.isEmpty) {
 
     ScaffoldMessenger.of(context).showSnackBar(
-
-      const SnackBar(
-        content: Text("Product Uploaded Successfully"),
-      ),
-
+      const SnackBar(content: Text("Please complete all fields")),
     );
 
-    nameController.clear();
-    priceController.clear();
-    descController.clear();
-
-    setState(() {
-      selectedImage = null;
-    });
+    return;
   }
+
+  await DatabaseService().addProduct(
+  name: nameController.text,
+  price: priceController.text,
+  description: descController.text,
+  image: selectedImage!.path,
+  sellerId: FirebaseAuth.instance.currentUser!.uid,
+);
+
+  print("PRODUCT SENT TO FIREBASE");
+
+}
 
   @override
   Widget build(BuildContext context) {
@@ -111,9 +97,26 @@ class _SellerUploadPageState extends State<SellerUploadPage> {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("Upload Product"),
-        backgroundColor: Colors.teal,
-      ),
+  title: const Text("Upload Product"),
+  backgroundColor: Colors.teal,
+
+  actions: [
+
+    IconButton(
+      icon: const Icon(Icons.person),
+
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const SellerProfilePage(),
+          ),
+        );
+      },
+    )
+
+  ],
+),
 
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -221,9 +224,9 @@ class _SellerUploadPageState extends State<SellerUploadPage> {
 
                   onPressed: uploadProduct,
 
-                  child: const Text("Upload Product"),
+                  child: const Text("Upload Product",style: TextStyle(color: Colors.white)),),
                 ),
-              ),
+              
             ],
           ),
         ),

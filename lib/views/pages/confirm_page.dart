@@ -1,11 +1,47 @@
+import 'dart:io';
+
+import 'package:cartze/views/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import '../../models/product.dart';
 
 class ConfirmPage extends StatelessWidget {
-
   final Product product;
 
   const ConfirmPage({super.key, required this.product});
+
+  Future<void> reserveOrder(BuildContext context) async {
+
+    final user = FirebaseAuth.instance.currentUser;
+
+    DatabaseReference ref = FirebaseDatabase.instanceFor(
+      app: Firebase.app(),
+      databaseURL:
+          "https://cartzy-8004b-default-rtdb.asia-southeast1.firebasedatabase.app",
+    ).ref("orders").push();
+
+    await ref.set({
+
+      "productName": product.name,
+      "price": product.price,
+      "buyerId": user!.uid,
+      "sellerId": product.sellerId,
+      "status": "reserved"
+
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Order Reserved Successfully"),
+      ),
+    );
+
+    Navigator.pop(context);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,24 +49,30 @@ class ConfirmPage extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("Reserve Purchase"),
+        title: const Text("Confirm Order"),
         backgroundColor: Colors.teal,
       ),
 
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(20),
 
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
 
-            Image.asset(
-              product.image,
-              height: 150,
+            /// PRODUCT IMAGE
+            Center(
+              child: Image.file(
+                File(product.image),
+                height: 200,
+                fit: BoxFit.cover,
+              ),
             ),
 
             const SizedBox(height: 20),
 
+            /// PRODUCT NAME
             Text(
               product.name,
               style: const TextStyle(
@@ -41,30 +83,56 @@ class ConfirmPage extends StatelessWidget {
 
             const SizedBox(height: 10),
 
+            /// PRODUCT PRICE
             Text(
-              product.price,
+              "₹${product.price}",
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 color: Colors.teal,
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
 
-            ElevatedButton(
-              onPressed: () {
+            /// DESCRIPTION
+            Text(
+              product.description,
+              style: const TextStyle(fontSize: 16),
+            ),
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Purchase Reserved 🎉"),
-                  ),
-                );
+            const Spacer(),
 
-                Navigator.popUntil(context, (route) => route.isFirst);
-              },
+            /// CONFIRM BUTTON
+            SizedBox(
+              width: double.infinity,
 
-              child: const Text("Reserve Purchase"),
-            )
+              child: ElevatedButton(
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xffec5800),
+                ),
+
+        onPressed: () async {
+
+  await reserveOrder(context);
+
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (_) => const MyHomePage()),
+    (route) => false,
+  );
+
+},
+
+                
+
+                child: const Text(
+                  "Confirm Order",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ),
+
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:cartze/views/pages/home_page.dart';
 import 'package:cartze/views/pages/register_page.dart';
 import 'package:cartze/views/pages/role_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key});
@@ -13,10 +14,11 @@ class MyLoginPage extends StatefulWidget {
 }
 
 class _MyLoginPageState extends State<MyLoginPage> {
+  TextEditingController controller1 = TextEditingController();
+    TextEditingController controller2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller1 = TextEditingController();
-    TextEditingController controller2 = TextEditingController();
+    
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -137,29 +139,53 @@ class _MyLoginPageState extends State<MyLoginPage> {
                         ),
                         SizedBox(height: 30.0),
                         FilledButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return RolePage();
-                                },
-                              ),
-                            );
-                          },
-                          style: FilledButton.styleFrom(
-                            backgroundColor: Colors.teal,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5.0,
-                              horizontal: 20.0,
-                            ),
-                            minimumSize: Size(200.0, 30.0),
-                          ),
-                          child: Text(
-                            "Login",
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                        ),
+  onPressed: () async {
+
+    try {
+
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: controller1.text.trim(),
+        password: controller2.text.trim(),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RolePage(),
+        ),
+      );
+
+    } on FirebaseAuthException catch (e) {
+
+      String message = "Login failed";
+
+      if (e.code == 'user-not-found') {
+        message = "No user found for this email";
+      } else if (e.code == 'wrong-password') {
+        message = "Incorrect password";
+      } else if (e.code == 'invalid-email') {
+        message = "Invalid email";
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
+
+  },
+  style: FilledButton.styleFrom(
+    backgroundColor: Colors.teal,
+    padding: EdgeInsets.symmetric(
+      vertical: 5.0,
+      horizontal: 20.0,
+    ),
+    minimumSize: Size(200.0, 30.0),
+  ),
+  child: Text(
+    "Login",
+    style: TextStyle(fontSize: 20.0),
+  ),
+),
                       ],
                     ),
                   ),

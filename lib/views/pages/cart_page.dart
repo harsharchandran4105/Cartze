@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../../data/cart.dart';
 
@@ -15,12 +17,7 @@ class _CartPageState extends State<CartPage> {
     int total = 0;
 
     for (var product in Cart.items) {
-
-      final price = int.parse(
-        product.price.replaceAll("₹", "").replaceAll(",", ""),
-      );
-
-      total += price;
+      total += product.price;   // price is now int
     }
 
     return total;
@@ -32,7 +29,10 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("My Cart"),
+        title: const Text(
+          "My Cart",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.teal,
       ),
 
@@ -51,14 +51,15 @@ class _CartPageState extends State<CartPage> {
 
                 return ListTile(
 
-                  leading: Image.asset(
-                    product.image,
+                  leading: Image.file(
+                    File(product.image),
                     width: 50,
+                    fit: BoxFit.cover,
                   ),
 
                   title: Text(product.name),
 
-                  subtitle: Text(product.price),
+                  subtitle: Text("₹${product.price}"),
 
                   /// REMOVE BUTTON
                   trailing: IconButton(
@@ -71,9 +72,7 @@ class _CartPageState extends State<CartPage> {
                     onPressed: () {
 
                       setState(() {
-
                         Cart.items.removeAt(index);
-
                       });
 
                     },
@@ -104,7 +103,7 @@ class _CartPageState extends State<CartPage> {
                 ElevatedButton(
 
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
+                    backgroundColor: const Color(0xffec5800),
                   ),
 
                   onPressed: () {
@@ -118,9 +117,7 @@ class _CartPageState extends State<CartPage> {
                     );
 
                     setState(() {
-
                       Cart.items.clear();
-
                     });
 
                   },

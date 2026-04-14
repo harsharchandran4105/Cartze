@@ -1,13 +1,19 @@
 class Product {
+
   final String name;
   final String category;
-  final String price;
+  final int price;
   final String image;
+  final String description;
+  final String sellerId;
 
   Product({
     required this.name,
     required this.category,
     required this.price,
     required this.image,
+    required this.description,
+    required this.sellerId,
   });
+
 }

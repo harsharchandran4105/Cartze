@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cartze/data/cart.dart';
 import 'package:cartze/views/pages/confirm_page.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +29,16 @@ class ProductPage extends StatelessWidget {
           children: [
 
             Center(
-              child: Image.asset(
-                product.image,
-                height: 250,
-              ),
-            ),
+  child: product.image.startsWith("assets/")
+      ? Image.asset(
+          product.image,
+          height: 200,
+        )
+      : Image.file(
+          File(product.image),
+          height: 200,
+        ),
+),
 
             const SizedBox(height: 20),
 
@@ -46,7 +53,7 @@ class ProductPage extends StatelessWidget {
             const SizedBox(height: 10),
 
             Text(
-              product.price,
+              "₹${product.price}",
               style: const TextStyle(
                 fontSize: 20,
                 color: Colors.teal,
@@ -55,8 +62,8 @@ class ProductPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            const Text(
-              "Product description goes here.",
+            Text(
+              product.description,
             ),
 
             const Spacer(),
@@ -79,7 +86,7 @@ class ProductPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               minimumSize: Size(250.0, 40.0),
                     ),
-                    child: const Text("Buy Now",),
+                    child: const Text("Reserve Now",),
                   ),
                 ),
 
